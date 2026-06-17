@@ -1,6 +1,8 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
+#include <stdint.h>
+
 typedef enum
 {
     GPIO_MODE_INPUT  = 0,
@@ -9,44 +11,40 @@ typedef enum
     GPIO_MODE_ANALOG = 3
 } GPIO_Mode_t;
 
+typedef enum
+{
+    GPIO_OUTTYPE_PUSH_PULL  = 0,
+    GPIO_OUTTYPE_OPEN_DRAIN = 1
+} GPIO_OUTTYPE_t;
 
-typedef enum{
-    GPIO_OUTTYPE_PUSH_PULL = 0,
-    GPIO_OUTTYPE_OPEND_RAIN = 1
-
-}GPIO_OUTTYPE_t;
-
-typedef enum{
-    GPIO_LOW_SPEED = 0,
+typedef enum
+{
+    GPIO_LOW_SPEED    = 0,
     GPIO_MEDIUM_SPEED = 1,
-    GPIO_HIGH_SPEED = 2
-
-}GPIO_OUTPUt_SPEED_t;
+    GPIO_HIGH_SPEED   = 2
+} GPIO_OUTPUT_SPEED_t;
 
 typedef struct 
 {
-    int Pin;
+    uint16_t Pin;
     GPIO_Mode_t Mode;
     GPIO_OUTTYPE_t OType;
-    GPIO_OUTPUt_SPEED_t Speed;
-
-}gpio_init_t;
-
+    GPIO_OUTPUT_SPEED_t Speed;
+} gpio_init_t;
 
 typedef struct 
 {
-    volatile int MODER;
-    volatile int OTYPER;
-    volatile int OSPEEDR;
-    volatile int PUPDR;
-    volatile int IDR;
-    volatile int ODR;
-    volatile int BSRR;
-    volatile int LCKR;
-    volatile int AFR[2];
-    volatile int BRR;
-}gpio_regTypedef_t;
-
+    volatile uint32_t MODER;
+    volatile uint32_t OTYPER;
+    volatile uint32_t OSPEEDR;
+    volatile uint32_t PUPDR;
+    volatile uint32_t IDR;
+    volatile uint32_t ODR;
+    volatile uint32_t BSRR;
+    volatile uint32_t LCKR;
+    volatile uint32_t AFR[2];
+    volatile uint32_t BRR;
+} gpio_regTypedef_t;
 
 #define GPIOA_BASE     0x48000000UL
 #define GPIOB_BASE     0x48000400UL
@@ -54,13 +52,11 @@ typedef struct
 #define GPIOD_BASE     0x48000C00UL
 #define GPIOF_BASE     0x48001400UL
 
-
-#define GPIOA (gpio_regTypedef_t*)(GPIOA_BASE)
-#define GPIOA (gpio_regTypedef_t*)(GPIOB_BASE)
-#define GPIOA (gpio_regTypedef_t*)(GPIOC_BASE)
-#define GPIOA (gpio_regTypedef_t*)(GPIOD_BASE)
-#define GPIOA (gpio_regTypedef_t*)(GPIOF_BASE)
-
+#define GPIOA ((gpio_regTypedef_t*)(GPIOA_BASE))
+#define GPIOB ((gpio_regTypedef_t*)(GPIOB_BASE))
+#define GPIOC ((gpio_regTypedef_t*)(GPIOC_BASE))
+#define GPIOD ((gpio_regTypedef_t*)(GPIOD_BASE))
+#define GPIOF ((gpio_regTypedef_t*)(GPIOF_BASE))
 
 #define GPIO_PIN_0     (1U << 0)
 #define GPIO_PIN_1     (1U << 1)
@@ -79,11 +75,9 @@ typedef struct
 #define GPIO_PIN_14    (1U << 14)
 #define GPIO_PIN_15    (1U << 15)
 
-
-
-void gpio_init(gpio_regTypedef_t *GPIOX, gpio_regTypedef_t gpio_init_struct);
-void gpio_WritePin(gpio_regTypedef_t *GPIOX, int pin, int state);
-void gpio_toggle(gpio_regTypedef_t *GPIOX,int pin);
-int gpio_ReadPin(gpio_regTypedef_t *GPIOX,int pin);
+void gpio_init(gpio_regTypedef_t *GPIOX, gpio_init_t *cfg);
+void gpio_WritePin(gpio_regTypedef_t *GPIOX, uint16_t pin, uint8_t state);
+void gpio_toggle(gpio_regTypedef_t *GPIOX, uint16_t pin);
+uint8_t gpio_ReadPin(gpio_regTypedef_t *GPIOX, uint16_t pin);
 
 #endif
