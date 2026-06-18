@@ -7,22 +7,21 @@ void gpio_toggle(gpio_regTypedef_t *GPIOX, uint16_t pin);
 uint8_t gpio_ReadPin(gpio_regTypedef_t *GPIOX, uint16_t pin);
 void gpio_init(gpio_regTypedef_t *GPIOX, gpio_init_t *cfg)
 {
-    
-    for(int pin = 0; pin < 16;pin++)
+    for (uint8_t pin = 0; pin < 16; pin++)
     {
-        if(cfg->Pin &(1<<pin))
+        if (cfg->Pin & (1U << pin))
         {
-                        /* Cấu hình mode: MODER dùng 2 bit cho mỗi pin */
-            GPIOX->MODER &= ~(3U << (pin * 2));
-            GPIOX->MODER |=  ((uint32_t)cfg->Mode << (pin * 2));
+            GPIOX->MODER &= ~(0x3U << (pin * 2U));
+            GPIOX->MODER |=  ((uint32_t)cfg->Mode << (pin * 2U));
 
-            /* Cấu hình output type: OTYPER dùng 1 bit cho mỗi pin */
             GPIOX->OTYPER &= ~(1U << pin);
             GPIOX->OTYPER |=  ((uint32_t)cfg->OType << pin);
 
-            /* Cấu hình speed: OSPEEDR dùng 2 bit cho mỗi pin */
-            GPIOX->OSPEEDR &= ~(3U << (pin * 2));
-            GPIOX->OSPEEDR |=  ((uint32_t)cfg->Speed << (pin * 2));
+            GPIOX->OSPEEDR &= ~(0x3U << (pin * 2U));
+            GPIOX->OSPEEDR |=  ((uint32_t)cfg->Speed << (pin * 2U));
+
+            GPIOX->PUPDR &= ~(0x3U << (pin * 2U));
+            GPIOX->PUPDR |=  ((uint32_t)cfg->Pull << (pin * 2U));
         }
     }
 }

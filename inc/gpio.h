@@ -23,13 +23,19 @@ typedef enum
     GPIO_MEDIUM_SPEED = 1,
     GPIO_HIGH_SPEED   = 2
 } GPIO_OUTPUT_SPEED_t;
-
+typedef enum
+{
+    GPIO_NO_PULL   = 0,
+    GPIO_PULL_UP   = 1,
+    GPIO_PULL_DOWN = 2
+} GPIO_PULL_t;
 typedef struct 
 {
     uint16_t Pin;
     GPIO_Mode_t Mode;
     GPIO_OUTTYPE_t OType;
     GPIO_OUTPUT_SPEED_t Speed;
+    GPIO_PULL_t Pull;
 } gpio_init_t;
 
 typedef struct 
@@ -44,6 +50,7 @@ typedef struct
     volatile uint32_t LCKR;
     volatile uint32_t AFR[2];
     volatile uint32_t BRR;
+    
 } gpio_regTypedef_t;
 
 #define GPIOA_BASE     0x48000000UL
