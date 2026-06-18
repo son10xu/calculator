@@ -1,7 +1,10 @@
 #include "gpio.h"
 
 
-
+void gpio_init(gpio_regTypedef_t *GPIOX, gpio_init_t *cfg);
+void gpio_WritePin(gpio_regTypedef_t *GPIOX, uint16_t pin, uint8_t state);
+void gpio_toggle(gpio_regTypedef_t *GPIOX, uint16_t pin);
+uint8_t gpio_ReadPin(gpio_regTypedef_t *GPIOX, uint16_t pin);
 void gpio_init(gpio_regTypedef_t *GPIOX, gpio_init_t *cfg)
 {
     
@@ -23,7 +26,7 @@ void gpio_init(gpio_regTypedef_t *GPIOX, gpio_init_t *cfg)
         }
     }
 }
-void gpio_WritePin(gpio_regTypedef_t *GPIOX, int pin, int state)
+void gpio_WritePin(gpio_regTypedef_t *GPIOX, uint16_t pin, uint8_t state)
 {
     if(state == 1)
     {
@@ -34,11 +37,11 @@ void gpio_WritePin(gpio_regTypedef_t *GPIOX, int pin, int state)
         GPIOX->BRR = pin;    // reset pin về 0
     }
 }
-void gpio_toggle(gpio_regTypedef_t *GPIOX, int pin)
+void gpio_toggle(gpio_regTypedef_t *GPIOX, uint16_t pin)
 {
     GPIOX->ODR ^= pin;
 }
-int gpio_ReadPin(gpio_regTypedef_t *GPIOX, int pin)
+uint8_t gpio_ReadPin(gpio_regTypedef_t *GPIOX, uint16_t pin)
 {
     if(GPIOX->IDR & pin)
     {
