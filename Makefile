@@ -26,6 +26,7 @@ MCU_FLAGS = $(CPU) -mthumb -mfloat-abi=soft
 C_SOURCES := $(wildcard src/*.c)
 C_INCLUDES := -Iinc
 
+
 # Compiler and linker flags
 OPT = -Og -g -gdwarf-2
 C_DEFS = -DSTM32F030x6

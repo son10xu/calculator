@@ -19,12 +19,12 @@ extern "C"
 #define RS_Pin GPIO_PIN_3
 #define EN_Pin GPIO_PIN_4
 
-void LCD_clear();
+void LCD_init(void);
+void LCD_clear(void);
 void LCD_setCursor(char row, char col);
-void LCD_puts(char *data);
-void LCD_scroll(char isScroll);
-void LCD_init();
 void LCD_sendChar(uint8_t data);
+void LCD_puts(char *data);
+
 
 #ifdef __cplusplus
 }
